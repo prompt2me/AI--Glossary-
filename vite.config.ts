@@ -4,8 +4,27 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  // Determine base path for GitHub Pages or other hosting environments
+  const getBase = () => {
+    // 1. Explicit base path passed by GitHub Actions (e.g. via configure-pages)
+    if (process.env.BASE_PATH) {
+      const bp = process.env.BASE_PATH;
+      return bp.endsWith('/') ? bp : `${bp}/`;
+    }
+    // 2. Automated detection from GitHub repository name (e.g. "username/ai-glossary")
+    if (process.env.GITHUB_REPOSITORY) {
+      const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
+      if (repoName && !repoName.endsWith('.github.io')) {
+        return `/${repoName}/`;
+      }
+      return '/';
+    }
+    // 3. Fallback to relative path for generic hosting or local previews
+    return './';
+  };
+
   return {
-    base: './',
+    base: getBase(),
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
