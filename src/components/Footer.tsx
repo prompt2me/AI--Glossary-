@@ -15,8 +15,12 @@ export const Footer: React.FC<FooterProps> = ({ onSelectCategory, onScrollToTop 
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-xs">
-                <BookOpen className="w-4 h-4" />
+              <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 overflow-hidden flex items-center justify-center shadow-xs shrink-0">
+                <img
+                  src={`${import.meta.env.BASE_URL}assets/aistudio/grok_1792955260013_351a6e6b.jpg`}
+                  alt="The AI Glossary Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="font-extrabold text-gray-900 tracking-tight text-lg">
                 The AI Glossary

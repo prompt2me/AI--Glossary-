@@ -47,8 +47,12 @@ export const HeaderHero: React.FC<HeaderHeroProps> = ({
       <div className="border-b border-gray-100 bg-white/90 backdrop-blur-sm sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
-              <BookOpen className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 overflow-hidden flex items-center justify-center shadow-xs shrink-0">
+              <img
+                src={`${import.meta.env.BASE_URL}assets/aistudio/grok_1792955260013_351a6e6b.jpg`}
+                alt="The AI Glossary Logo"
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="font-bold text-gray-900 tracking-tight text-base sm:text-lg">
               The AI Glossary
