@@ -20,6 +20,9 @@ interface HeaderHeroProps {
   onOpenBookmarks: () => void;
   onOpenExport: () => void;
   onFocusSearch: () => void;
+  onJumpToIndex: () => void;
+  onJumpToTopics: () => void;
+  onJumpToTerms: () => void;
 }
 
 export const HeaderHero: React.FC<HeaderHeroProps> = ({
@@ -30,6 +33,9 @@ export const HeaderHero: React.FC<HeaderHeroProps> = ({
   onOpenBookmarks,
   onOpenExport,
   onFocusSearch,
+  onJumpToIndex,
+  onJumpToTopics,
+  onJumpToTerms,
 }) => {
   const [copiedUrl, setCopiedUrl] = React.useState(false);
 
@@ -152,41 +158,57 @@ export const HeaderHero: React.FC<HeaderHeroProps> = ({
 
         {/* Stats Row */}
         <div className="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2">
-          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left">
+          <button
+            type="button"
+            onClick={onJumpToTerms}
+            className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left hover:border-blue-400 hover:shadow-sm hover:scale-[1.02] transition-all cursor-pointer group"
+          >
             <div className="flex items-center gap-2 text-blue-600 mb-1">
-              <BookOpen className="w-4 h-4" />
+              <BookOpen className="w-4 h-4 group-hover:scale-110 transition-transform" />
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Terms</span>
             </div>
             <div className="text-2xl font-bold text-gray-900 tracking-tight">{totalTerms}</div>
-            <div className="text-xs text-gray-500 mt-0.5">Plain-English definitions</div>
-          </div>
+            <div className="text-xs text-blue-600 font-medium mt-0.5 group-hover:underline">Explore glossary →</div>
+          </button>
 
-          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left">
+          <button
+            type="button"
+            onClick={onJumpToTopics}
+            className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left hover:border-purple-400 hover:shadow-sm hover:scale-[1.02] transition-all cursor-pointer group"
+          >
             <div className="flex items-center gap-2 text-purple-600 mb-1">
-              <Layers className="w-4 h-4" />
+              <Layers className="w-4 h-4 group-hover:scale-110 transition-transform" />
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Topics</span>
             </div>
             <div className="text-2xl font-bold text-gray-900 tracking-tight">{totalCategories}</div>
-            <div className="text-xs text-gray-500 mt-0.5">Categorized domains</div>
-          </div>
+            <div className="text-xs text-purple-600 font-medium mt-0.5 group-hover:underline">Browse topics →</div>
+          </button>
 
-          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left">
+          <button
+            type="button"
+            onClick={onJumpToIndex}
+            className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left hover:border-emerald-400 hover:shadow-sm hover:scale-[1.02] transition-all cursor-pointer group"
+          >
             <div className="flex items-center gap-2 text-emerald-600 mb-1">
-              <Search className="w-4 h-4" />
+              <Search className="w-4 h-4 group-hover:scale-110 transition-transform" />
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Index</span>
             </div>
             <div className="text-2xl font-bold text-gray-900 tracking-tight">A – Z</div>
-            <div className="text-xs text-gray-500 mt-0.5">Alphabetical jump grid</div>
-          </div>
+            <div className="text-xs text-emerald-600 font-medium mt-0.5 group-hover:underline">Quick-jump index →</div>
+          </button>
 
-          <div className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left">
+          <button
+            type="button"
+            onClick={onJumpToTerms}
+            className="p-3.5 rounded-xl bg-white border border-gray-200 shadow-xs text-left hover:border-amber-400 hover:shadow-sm hover:scale-[1.02] transition-all cursor-pointer group"
+          >
             <div className="flex items-center gap-2 text-amber-600 mb-1">
-              <ShieldCheck className="w-4 h-4" />
+              <ShieldCheck className="w-4 h-4 group-hover:scale-110 transition-transform" />
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Quality</span>
             </div>
             <div className="text-2xl font-bold text-gray-900 tracking-tight">100%</div>
-            <div className="text-xs text-gray-500 mt-0.5">AEO &amp; citability ready</div>
-          </div>
+            <div className="text-xs text-amber-600 font-medium mt-0.5 group-hover:underline">AEO verified →</div>
+          </button>
         </div>
       </div>
     </header>

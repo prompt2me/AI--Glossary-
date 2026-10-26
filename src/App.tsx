@@ -187,6 +187,19 @@ export default function App() {
     return groups;
   }, [filteredTerms]);
 
+  // Overall letter counts across the full glossary
+  const totalLetterCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (let charCode = 65; charCode <= 90; charCode++) {
+      counts[String.fromCharCode(charCode)] = 0;
+    }
+    for (const term of GLOSSARY_TERMS) {
+      const letter = (term.letter || term.term.charAt(0)).toUpperCase();
+      counts[letter] = (counts[letter] || 0) + 1;
+    }
+    return counts;
+  }, []);
+
   // Letter counts based on currently filtered terms
   const letterCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -205,18 +218,56 @@ export default function App() {
     return counts;
   }, [filteredTerms]);
 
-  // Scroll to a letter section
-  const scrollToLetter = (letter: string) => {
-    setActiveLetter(letter);
+  const performScrollToLetter = (letter: string) => {
     const target = document.getElementById(`section-${letter}`);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      const yOffset = -180;
+      const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    }
+  };
+
+  // Scroll to a letter section with filter unlocking
+  const scrollToLetter = (letter: string, forceResetFilters = false) => {
+    setActiveLetter(letter);
+    if (forceResetFilters) {
+      setSearchQuery('');
+      setSelectedCategory('All');
+      setBookmarkedOnly(false);
+      setTimeout(() => {
+        performScrollToLetter(letter);
+      }, 80);
+    } else {
+      performScrollToLetter(letter);
     }
   };
 
   // Scroll to top
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Navigation jump helpers for stats cards
+  const handleJumpToIndex = () => {
+    const el = document.getElementById('alphabet-jump-grid');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleJumpToTopics = () => {
+    window.scrollTo({ top: 400, behavior: 'smooth' });
+  };
+
+  const handleJumpToTerms = () => {
+    const firstSection = document.querySelector('section[id^="section-"]');
+    if (firstSection) {
+      const yOffset = -180;
+      const y = firstSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 600, behavior: 'smooth' });
+    }
   };
 
   // Jump to random term
@@ -268,13 +319,18 @@ export default function App() {
         onOpenBookmarks={() => setIsBookmarksOpen(true)}
         onOpenExport={() => setIsExportOpen(true)}
         onFocusSearch={() => searchInputRef.current?.focus()}
+        onJumpToIndex={handleJumpToIndex}
+        onJumpToTopics={handleJumpToTopics}
+        onJumpToTerms={handleJumpToTerms}
       />
 
       <main className="flex-1">
         {/* 2. Alphabet Quick-Jump Grid (A–Z) */}
         <AlphabetJumpGrid
           letterCounts={letterCounts}
+          totalLetterCounts={totalLetterCounts}
           activeLetter={activeLetter}
+          hasActiveFilters={Boolean(searchQuery.trim() || selectedCategory !== 'All' || bookmarkedOnly)}
           onSelectLetter={scrollToLetter}
         />
 

@@ -57,7 +57,7 @@ export const GlossaryList: React.FC<GlossaryListProps> = ({
             <section
               key={letter}
               id={`section-${letter}`}
-              className="scroll-mt-32 pt-2"
+              className="scroll-mt-48 sm:scroll-mt-52 pt-2"
               aria-labelledby={`heading-${letter}`}
             >
               {/* Section Header */}
