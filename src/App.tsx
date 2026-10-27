@@ -5,10 +5,11 @@ import { AlphabetJumpGrid } from './components/AlphabetJumpGrid';
 import { TopicNavigation } from './components/TopicNavigation';
 import { SearchAndFilterBar } from './components/SearchAndFilterBar';
 import { GlossaryList } from './components/GlossaryList';
-import { BookmarksDrawer } from './components/BookmarksDrawer';
-import { ExportModal } from './components/ExportModal';
 import { Footer } from './components/Footer';
 import { ArrowUp } from 'lucide-react';
+
+const BookmarksDrawer = React.lazy(() => import('./components/BookmarksDrawer').then(m => ({ default: m.BookmarksDrawer })));
+const ExportModal = React.lazy(() => import('./components/ExportModal').then(m => ({ default: m.ExportModal })));
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -365,7 +366,7 @@ export default function App() {
           searchQuery={searchQuery}
           bookmarkedIds={bookmarkedIds}
           onToggleBookmark={toggleBookmark}
-          onSelectCategory={(cat) => {
+          onSelectCategory={(cat: TopicCategory) => {
             setSelectedCategory(cat);
             window.scrollTo({ top: 380, behavior: 'smooth' });
           }}
@@ -384,21 +385,29 @@ export default function App() {
       />
 
       {/* Slide-over Bookmarks Drawer */}
-      <BookmarksDrawer
-        isOpen={isBookmarksOpen}
-        onClose={() => setIsBookmarksOpen(false)}
-        bookmarkedTerms={bookmarkedTermsList}
-        onRemoveBookmark={toggleBookmark}
-        onClearAllBookmarks={clearAllBookmarks}
-        onSelectCategory={(cat) => setSelectedCategory(cat)}
-      />
+      {isBookmarksOpen && (
+        <React.Suspense fallback={null}>
+          <BookmarksDrawer
+            isOpen={isBookmarksOpen}
+            onClose={() => setIsBookmarksOpen(false)}
+            bookmarkedTerms={bookmarkedTermsList}
+            onRemoveBookmark={toggleBookmark}
+            onClearAllBookmarks={clearAllBookmarks}
+            onSelectCategory={(cat) => setSelectedCategory(cat)}
+          />
+        </React.Suspense>
+      )}
 
       {/* Export Modal */}
-      <ExportModal
-        isOpen={isExportOpen}
-        onClose={() => setIsExportOpen(false)}
-        terms={filteredTerms}
-      />
+      {isExportOpen && (
+        <React.Suspense fallback={null}>
+          <ExportModal
+            isOpen={isExportOpen}
+            onClose={() => setIsExportOpen(false)}
+            terms={filteredTerms}
+          />
+        </React.Suspense>
+      )}
 
       {/* Floating Back to Top Button */}
       {showScrollTop && (
